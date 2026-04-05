@@ -74,7 +74,7 @@ jobs:
         run: pnpm test --coverage
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage
@@ -123,7 +123,7 @@ jobs:
 
       - name: Upload Playwright report
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report-${{ matrix.project }}
           path: playwright-report
@@ -198,7 +198,7 @@ jobs:
         run: pnpm build
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: svelte-kit-output
           path: .svelte-kit/output
@@ -254,7 +254,7 @@ jobs:
         run: bash scripts/tauri-smoke.sh
 
       - name: Upload .app bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tauri-universal-app
           path: src-tauri/target/universal-apple-darwin/release/bundle/macos/*.app
