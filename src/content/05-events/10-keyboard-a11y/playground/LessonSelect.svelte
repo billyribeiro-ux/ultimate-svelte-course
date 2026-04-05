@@ -22,8 +22,10 @@
 		options.find((o) => o.value === value)?.label ?? 'Select an option'
 	);
 
-	const listId: string = `${id}-listbox`;
-	const optionId = (i: number): string => `${id}-option-${i}`;
+	const listId: string = $derived(`${id}-listbox`);
+	function optionId(i: number): string {
+		return `${id}-option-${i}`;
+	}
 
 	function openMenu(): void {
 		const selectedIdx: number = options.findIndex((o) => o.value === value);
@@ -113,6 +115,7 @@
 	{#if open}
 		<ul class="listbox" id={listId} role="listbox" aria-label={label}>
 			{#each options as option, i (option.value)}
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<li
 					class="option"
 					id={optionId(i)}

@@ -2,16 +2,16 @@ pre-commit:
   parallel: true
   commands:
     prettier:
-      glob: "*.{ts,js,svelte,css,md,json,yml,yaml}"
+      glob: '*.{ts,js,svelte,css,md,json,yml,yaml}'
       run: pnpm prettier --check {staged_files} || true
     eslint:
-      glob: "*.{ts,js,svelte}"
+      glob: '*.{ts,js,svelte}'
       run: pnpm eslint {staged_files} || true
     typecheck:
-      glob: "*.{ts,svelte}"
+      glob: '*.{ts,svelte}'
       run: pnpm check || true
     unit-test-changed:
-      glob: "*.{ts,svelte}"
+      glob: '*.{ts,svelte}'
       run: pnpm vitest run --changed || true
 
 commit-msg:

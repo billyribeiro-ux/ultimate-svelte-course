@@ -14,6 +14,11 @@
 		e.stopPropagation();
 	}
 
+	function onPanelKeydown(e: KeyboardEvent): void {
+		// Mirror stopPropagation for keyboard activation inside the panel.
+		e.stopPropagation();
+	}
+
 	$effect(() => {
 		function onDocClick(_e: MouseEvent): void {
 			open = false;
@@ -39,7 +44,8 @@
 		</button>
 
 		{#if open}
-			<div class="panel" role="menu" onclick={onPanelClick}>
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+			<div class="panel" role="group" aria-label="Settings" onclick={onPanelClick} onkeydown={onPanelKeydown}>
 				<label class="row">
 					<input type="checkbox" bind:checked={notifications} />
 					<span>Enable notifications</span>

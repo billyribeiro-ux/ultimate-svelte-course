@@ -7,7 +7,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
+		"prepare": "svelte-kit sync || echo '' && lefthook install || true",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest run",
@@ -25,6 +25,9 @@
 		"e2e:codegen": "playwright codegen http://localhost:4173"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.11.1",
+		"@commitlint/cli": "^19.6.0",
+		"@commitlint/config-conventional": "^19.6.0",
 		"@eslint/js": "^10.0.1",
 		"@iconify-json/carbon": "^1.2.20",
 		"@iconify-json/ph": "^1.2.2",
@@ -44,6 +47,7 @@
 		"eslint-plugin-svelte": "^3.17.0",
 		"globals": "^17.4.0",
 		"jsdom": "^29.0.1",
+		"lefthook": "^1.8.0",
 		"mdsvex": "^0.12.7",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.5.1",

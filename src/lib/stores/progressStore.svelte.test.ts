@@ -4,11 +4,15 @@
  * Uses the `.svelte.test.ts` extension so Vite compiles `$state` / `$derived`
  * / `$effect` inside the code under test. Uses `flushSync` to synchronize
  * reactive updates after mutations.
+ *
+ * `progress` is a module-level singleton, so we reset it between tests via
+ * `resetProgressStore()` rather than re-importing the module.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { createMockLessonMeta, createMockModuleMeta } from '$lib/test-utils';
 import type { ModuleMeta } from '$lib/types/lesson';
+import { progress } from './progressStore.svelte';
 
 const STORAGE_KEY = 'ultsvelte:progress:v1';
 
@@ -31,15 +35,17 @@ function buildManifest(): readonly ModuleMeta[] {
 	];
 }
 
-// Fresh module import per test so singleton `progress` state is isolated.
-async function freshStore(): Promise<typeof import('./progressStore.svelte.ts')> {
-	vi.resetModules();
-	return await import('./progressStore.svelte.ts');
+function resetProgressStore(): void {
+	progress.reset();
+	progress.currentLessonId = null;
+	progress.theme = 'system';
+	progress.setManifest([]);
 }
 
 describe('ProgressStore', () => {
 	beforeEach(() => {
 		localStorage.clear();
+		resetProgressStore();
 	});
 
 	afterEach(() => {
@@ -47,16 +53,14 @@ describe('ProgressStore', () => {
 		vi.restoreAllMocks();
 	});
 
-	it('markComplete adds to completedLessons', async () => {
-		const { progress } = await freshStore();
+	it('markComplete adds to completedLessons', () => {
 		progress.markComplete('lesson-a');
 		flushSync();
 		expect(progress.completedLessons.has('lesson-a')).toBe(true);
 		expect(progress.completedLessons.size).toBe(1);
 	});
 
-	it('markIncomplete removes from completedLessons', async () => {
-		const { progress } = await freshStore();
+	it('markIncomplete removes from completedLessons', () => {
 		progress.markComplete('lesson-a');
 		progress.markIncomplete('lesson-a');
 		flushSync();
@@ -64,8 +68,7 @@ describe('ProgressStore', () => {
 		expect(progress.completedLessons.size).toBe(0);
 	});
 
-	it('reset empties the completed set', async () => {
-		const { progress } = await freshStore();
+	it('reset empties the completed set', () => {
 		progress.markComplete('a');
 		progress.markComplete('b');
 		progress.reset();
@@ -73,8 +76,7 @@ describe('ProgressStore', () => {
 		expect(progress.completedLessons.size).toBe(0);
 	});
 
-	it('toggleComplete flips membership', async () => {
-		const { progress } = await freshStore();
+	it('toggleComplete flips membership', () => {
 		progress.toggleComplete('x');
 		flushSync();
 		expect(progress.completedLessons.has('x')).toBe(true);
@@ -83,8 +85,7 @@ describe('ProgressStore', () => {
 		expect(progress.completedLessons.has('x')).toBe(false);
 	});
 
-	it('overallPercent recomputes via $derived.by after mutations', async () => {
-		const { progress } = await freshStore();
+	it('overallPercent recomputes via $derived.by after mutations', () => {
 		progress.setManifest(buildManifest());
 		flushSync();
 		expect(progress.overallPercent).toBe(0);
@@ -100,20 +101,17 @@ describe('ProgressStore', () => {
 		expect(progress.overallPercent).toBe(1);
 	});
 
-	it('overallPercent is 0 when manifest is empty', async () => {
-		const { progress } = await freshStore();
+	it('overallPercent is 0 when manifest is empty', () => {
 		flushSync();
 		expect(progress.overallPercent).toBe(0);
 	});
 
-	it('modulePercent returns 0 for unknown modules', async () => {
-		const { progress } = await freshStore();
+	it('modulePercent returns 0 for unknown modules', () => {
 		progress.setManifest(buildManifest());
 		expect(progress.modulePercent('does-not-exist')).toBe(0);
 	});
 
-	it('modulePercent computes correctly for known modules', async () => {
-		const { progress } = await freshStore();
+	it('modulePercent computes correctly for known modules', () => {
 		progress.setManifest(buildManifest());
 		progress.markComplete('m1-l1');
 		flushSync();
@@ -124,7 +122,7 @@ describe('ProgressStore', () => {
 		expect(progress.modulePercent('m2')).toBe(0);
 	});
 
-	it('hydrate restores state from a localStorage snapshot', async () => {
+	it('hydrate restores state from a localStorage snapshot', () => {
 		const snapshot = {
 			completed: ['lesson-a', 'lesson-b'],
 			currentLessonId: 'lesson-a',
@@ -133,7 +131,8 @@ describe('ProgressStore', () => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 		const getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
 
-		const { progress } = await freshStore();
+		// Reach into the private hydration guard so each test starts fresh.
+		(progress as unknown as { '#hydrated': boolean })['#hydrated'] = false;
 		progress.hydrate();
 		flushSync();
 
@@ -144,35 +143,34 @@ describe('ProgressStore', () => {
 		expect(progress.theme).toBe('dark');
 	});
 
-	it('hydrate is a no-op when no snapshot exists', async () => {
-		const { progress } = await freshStore();
+	it('hydrate is a no-op when no snapshot exists', () => {
 		progress.hydrate();
 		flushSync();
 		expect(progress.completedLessons.size).toBe(0);
 		expect(progress.theme).toBe('system');
 	});
 
-	it('hydrate ignores malformed JSON', async () => {
+	it('hydrate ignores malformed JSON', () => {
 		localStorage.setItem(STORAGE_KEY, '{not-json');
-		const { progress } = await freshStore();
 		expect(() => progress.hydrate()).not.toThrow();
 		flushSync();
 		expect(progress.completedLessons.size).toBe(0);
 	});
 
-	it('persist writes a JSON snapshot to localStorage via $effect', async () => {
+	it('persist writes a JSON snapshot to localStorage via $effect', () => {
 		const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
-		const { progress } = await freshStore();
 
+		// persist() has an internal guard that makes it idempotent; call it
+		// once per test run. The $effect inside runs on first creation and on
+		// every tracked dependency change thereafter.
 		progress.persist();
-		// The $effect created inside persist() runs in a detached root; a
-		// flushSync with a mutation closure forces the scheduler to run it.
+		flushSync();
+
 		flushSync(() => {
 			progress.markComplete('lesson-a');
 			progress.currentLessonId = 'lesson-a';
 			progress.theme = 'dark';
 		});
-		flushSync();
 
 		expect(setItemSpy).toHaveBeenCalledWith(STORAGE_KEY, expect.any(String));
 		const raw = localStorage.getItem(STORAGE_KEY);

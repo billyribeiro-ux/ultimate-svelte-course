@@ -39,10 +39,8 @@
 			});
 	}, 300);
 
-	function onInput(e: InputEvent): void {
-		const target = e.currentTarget;
-		if (!(target instanceof HTMLInputElement)) return;
-		query = target.value;
+	function onInput(e: Event & { currentTarget: EventTarget & HTMLInputElement }): void {
+		query = e.currentTarget.value;
 		keystrokes += 1;
 		runSearch(query);
 	}

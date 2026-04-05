@@ -23,14 +23,14 @@ This will also install the lefthook git hooks via the `prepare` script.
 
 ## Development
 
-| Command           | Description                                 |
-| ----------------- | ------------------------------------------- |
-| `pnpm dev`        | Start the SvelteKit dev server on `:5173`   |
-| `pnpm dev:tauri`  | Launch the app inside a native macOS window |
-| `pnpm check`      | Run svelte-check / TypeScript diagnostics   |
-| `pnpm test`       | Run Vitest unit + component tests           |
-| `pnpm e2e`        | Run Playwright E2E tests                    |
-| `pnpm preview`    | Preview the production web build locally   |
+| Command          | Description                                 |
+| ---------------- | ------------------------------------------- |
+| `pnpm dev`       | Start the SvelteKit dev server on `:5173`   |
+| `pnpm dev:tauri` | Launch the app inside a native macOS window |
+| `pnpm check`     | Run svelte-check / TypeScript diagnostics   |
+| `pnpm test`      | Run Vitest unit + component tests           |
+| `pnpm e2e`       | Run Playwright E2E tests                    |
+| `pnpm preview`   | Preview the production web build locally    |
 
 ## Build
 

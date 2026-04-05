@@ -8,7 +8,7 @@
  *    advancement via `vi.advanceTimersByTime` in combination with `vi.setSystemTime`.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { registerShortcuts, type ShortcutHandlers } from './shortcuts.svelte.ts';
+import { registerShortcuts, type ShortcutHandlers } from './shortcuts.svelte';
 
 function makeHandlers(): Required<ShortcutHandlers> {
 	return {
