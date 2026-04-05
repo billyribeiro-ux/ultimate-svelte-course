@@ -16,6 +16,7 @@
 		"build:tauri:universal": "cross-env TAURI_BUILD=1 tauri build --target universal-apple-darwin"
 	},
 	"devDependencies": {
+		"@eslint/js": "^10.0.1",
 		"@iconify-json/carbon": "^1.2.20",
 		"@iconify-json/ph": "^1.2.2",
 		"@playwright/test": "^1.59.1",
