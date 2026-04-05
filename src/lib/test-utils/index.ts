@@ -4,7 +4,7 @@
  * Import from `$lib/test-utils` in any `*.test.ts` or `*.svelte.test.ts` file.
  * Re-exports the main testing-library APIs so tests only need one import line.
  */
-import { render, type RenderResult } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 import type { Component, ComponentProps } from 'svelte';
 import type { LessonMeta, ModuleMeta } from '$lib/types/lesson';
 
@@ -12,15 +12,21 @@ export * from '@testing-library/svelte';
 export { default as userEvent } from '@testing-library/user-event';
 
 /**
- * Render a Svelte component with typed props. Thin wrapper around
- * `@testing-library/svelte`'s `render` that preserves full type inference
- * on the props parameter. Add shared context providers here as the app grows.
+ * Render a Svelte 5 component with fully-typed props. Thin wrapper around
+ * `@testing-library/svelte`'s `render` that preserves type inference on the
+ * props parameter. Add shared context providers here as the app grows
+ * (e.g. theme, progress store, router context).
  */
-export function renderWithContext<TComponent extends Component<Record<string, unknown>>>(
-	Component: TComponent,
-	props: ComponentProps<TComponent>
-): RenderResult<TComponent> {
-	return render(Component, { props }) as RenderResult<TComponent>;
+export function renderWithContext<
+	TProps extends Record<string, unknown>,
+	TComponent extends Component<TProps>
+>(component: TComponent, props: ComponentProps<TComponent>): ReturnType<typeof render> {
+	// Cast at the boundary: testing-library's `render` uses a legacy
+	// `ComponentType` shape that is not assignable from a Svelte 5
+	// `Component` under `exactOptionalPropertyTypes`, but it works at runtime.
+	return render(component as unknown as Parameters<typeof render>[0], {
+		props: props as Record<string, unknown>
+	});
 }
 
 /**
