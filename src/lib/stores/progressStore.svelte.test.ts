@@ -131,8 +131,9 @@ describe('ProgressStore', () => {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 		const getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
 
-		// Reach into the private hydration guard so each test starts fresh.
-		(progress as unknown as { '#hydrated': boolean })['#hydrated'] = false;
+		// NOTE: `progress.hydrate()` is guarded by a private `#hydrated` flag
+		// that makes it idempotent. This test relies on being the first test
+		// in this file that calls hydrate() on the singleton store.
 		progress.hydrate();
 		flushSync();
 
