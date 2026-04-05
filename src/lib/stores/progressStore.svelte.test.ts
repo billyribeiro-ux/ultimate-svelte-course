@@ -164,11 +164,14 @@ describe('ProgressStore', () => {
 		const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 		const { progress } = await freshStore();
 
-		progress.markComplete('lesson-a');
-		progress.currentLessonId = 'lesson-a';
-		progress.theme = 'dark';
-		progress.persist();
-		flushSync();
+		flushSync(() => {
+			progress.persist();
+		});
+		flushSync(() => {
+			progress.markComplete('lesson-a');
+			progress.currentLessonId = 'lesson-a';
+			progress.theme = 'dark';
+		});
 
 		expect(setItemSpy).toHaveBeenCalled();
 		const raw = localStorage.getItem(STORAGE_KEY);

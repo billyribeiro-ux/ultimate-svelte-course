@@ -128,6 +128,12 @@ describe('registerShortcuts', () => {
 	it('ignores events whose target is a contenteditable element', () => {
 		const div = document.createElement('div');
 		div.setAttribute('contenteditable', 'true');
+		// jsdom does not reflect the contenteditable attribute onto the
+		// `isContentEditable` getter, so patch it for this element.
+		Object.defineProperty(div, 'isContentEditable', {
+			configurable: true,
+			get: () => true
+		});
 		document.body.appendChild(div);
 		dispatchKey('c', { target: div });
 		expect(handlers.onToggleComplete).not.toHaveBeenCalled();
