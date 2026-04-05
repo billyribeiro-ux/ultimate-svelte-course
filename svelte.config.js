@@ -1,11 +1,21 @@
 import adapterAuto from '@sveltejs/adapter-auto';
 import adapterNode from '@sveltejs/adapter-node';
+import { mdsvex } from 'mdsvex';
 import { relative, sep } from 'node:path';
 
 const tauri = process.env.TAURI_BUILD === '1';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+	extensions: ['.svelte', '.md'],
+	preprocess: [
+		mdsvex({
+			extensions: ['.md'],
+			layout: {
+				_: './src/lib/mdsvex-layout.svelte'
+			}
+		})
+	],
 	compilerOptions: {
 		// defaults to rune mode for the project, except for `node_modules`. Can be removed in svelte 6.
 		runes: ({ filename }) => {
@@ -24,7 +34,10 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters.
 		adapter: tauri
 			? adapterNode({ out: 'build-node', precompress: false })
-			: adapterAuto()
+			: adapterAuto(),
+		experimental: {
+			remoteFunctions: true
+		}
 	}
 };
 

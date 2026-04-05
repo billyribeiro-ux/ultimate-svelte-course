@@ -9,7 +9,11 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"dev:tauri": "cross-env TAURI_BUILD=1 tauri dev",
+		"build:tauri:frontend": "cross-env TAURI_BUILD=1 vite build && node scripts/package-sidecar.mjs",
+		"build:tauri": "cross-env TAURI_BUILD=1 tauri build",
+		"build:tauri:universal": "cross-env TAURI_BUILD=1 tauri build --target universal-apple-darwin"
 	},
 	"devDependencies": {
 		"@iconify-json/carbon": "^1.2.20",

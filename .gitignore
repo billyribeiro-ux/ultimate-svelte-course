@@ -7,6 +7,11 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
+/build-node
+
+# Tauri
+/src-tauri/target
+/src-tauri/binaries
 
 # OS
 .DS_Store
