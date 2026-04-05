@@ -6,7 +6,7 @@
 
 	function cycle(): void {
 		const idx = order.indexOf(progress.theme);
-		const next = order[(idx + 1) % order.length];
+		const next = order[(idx + 1) % order.length] ?? 'system';
 		progress.theme = next;
 	}
 

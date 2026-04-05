@@ -82,6 +82,32 @@
 	--color-danger: oklch(60% 0.21 25);
 	--color-focus: oklch(70% 0.18 250);
 	--color-link: oklch(55% 0.19 255);
+
+	/* --- Shell aliases — short-form names used by course platform components --- */
+	--space-s: var(--space-sm);
+	--space-m: var(--space-md);
+	--space-l: var(--space-lg);
+	--text-s: var(--text-sm);
+	--text-m: var(--text-base);
+	--text-l: var(--text-lg);
+	--text-3xl: var(--text-2xl);
+	--text-4xl: var(--text-hero);
+	--radius-s: var(--radius-sm);
+	--radius-m: var(--radius-md);
+	--radius-l: var(--radius-lg);
+	--radius-pill: var(--radius-full);
+	--dur-s: var(--dur-fast);
+	--dur-m: var(--dur-base);
+	--color-surface-1: var(--color-surface);
+	--color-on-accent: var(--color-primary-contrast);
+	--color-surface-accent: color-mix(in oklch, var(--color-accent) 12%, var(--color-surface));
+	--color-success-surface: color-mix(in oklch, var(--color-success) 15%, var(--color-surface));
+	--color-code-bg: var(--color-surface-2);
+	--measure-prose: 65ch;
+	--measure-wide: 80ch;
+	--touch-min: 2.75rem;
+	--header-block-size: 4rem;
+	--sidebar-inline-size: 18rem;
 }
 
 /* Dark mode — automatic via user preference */
