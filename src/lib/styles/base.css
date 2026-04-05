@@ -1,0 +1,39 @@
+/* PE7 base element styles — every value tokenized */
+
+html {
+	scroll-behavior: smooth;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	accent-color: var(--color-primary);
+	color-scheme: light dark;
+}
+
+body {
+	background-color: var(--color-bg);
+	color: var(--color-fg);
+	font-family: var(--font-sans);
+	font-size: var(--text-base);
+	line-height: var(--leading-normal);
+	font-synthesis: none;
+	transition:
+		background-color var(--dur-base) var(--ease-out),
+		color var(--dur-base) var(--ease-out);
+}
+
+::selection {
+	background-color: var(--color-primary);
+	color: var(--color-primary-contrast);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-sm);
+}
+
+hr {
+	border: 0;
+	border-block-start: 1px solid var(--color-border);
+	margin-block: var(--space-lg);
+}

@@ -1,0 +1,83 @@
+/* PE7 modern reset — minimal, logical, token-free */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol,
+pre {
+	margin-block: 0;
+	margin-inline: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+	list-style: none;
+	padding-inline: 0;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	min-block-size: 100vh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-inline-size: 100%;
+	block-size: auto;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	background: none;
+	border: 0;
+	padding-inline: 0;
+	padding-block: 0;
+	cursor: pointer;
+}
+
+a {
+	color: inherit;
+	text-decoration-skip-ink: auto;
+}
+
+table {
+	border-collapse: collapse;
+	inline-size: 100%;
+}
+
+:where(:focus-visible) {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}

@@ -1,0 +1,10 @@
+/* PE7 CSS foundation — Lesson 1.5 master file. Immutable after this point. */
+
+/* Declare layer order first so imports cannot accidentally reorder the cascade. */
+@layer reset, tokens, base, layout, components, animations;
+
+@import url('./lib/styles/reset.css') layer(reset);
+@import url('./lib/styles/tokens.css') layer(tokens);
+@import url('./lib/styles/base.css') layer(base);
+@import url('./lib/styles/prose.css') layer(base);
+@import url('./lib/styles/motion.css') layer(animations);
