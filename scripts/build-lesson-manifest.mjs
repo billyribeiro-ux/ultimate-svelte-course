@@ -114,8 +114,13 @@ function main() {
 	console.log(`[lesson-manifest] wrote ${lessons.length} lessons to ${outFile}`);
 }
 
-main();
+// Run immediately when invoked as a script.
+const invokedDirectly = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (invokedDirectly) {
+	main();
+}
 
+// Playwright globalSetup hook.
 export default function globalSetup() {
 	main();
 }

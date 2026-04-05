@@ -9,10 +9,12 @@
 
 	function onPointerDown(e: PointerEvent): void {
 		if (dismissed) return;
+		const target = e.currentTarget;
+		if (!(target instanceof HTMLElement)) return;
 		dragging = true;
 		startX = e.clientX;
 		pointerId = e.pointerId;
-		e.currentTarget.setPointerCapture(e.pointerId);
+		target.setPointerCapture(e.pointerId);
 	}
 
 	function onPointerMove(e: PointerEvent): void {
@@ -24,10 +26,13 @@
 		if (!dragging) return;
 		dragging = false;
 		if (pointerId !== null) {
-			try {
-				e.currentTarget.releasePointerCapture(pointerId);
-			} catch {
-				/* already released */
+			const target = e.currentTarget;
+			if (target instanceof HTMLElement) {
+				try {
+					target.releasePointerCapture(pointerId);
+				} catch {
+					/* already released */
+				}
 			}
 			pointerId = null;
 		}
