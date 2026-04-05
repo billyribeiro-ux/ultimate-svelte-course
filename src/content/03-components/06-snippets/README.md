@@ -1,4 +1,4 @@
-## Snippets — {#snippet} and {@render}
+## Snippets — `{#snippet}` and `{@render}`
 
 ### Concept
 

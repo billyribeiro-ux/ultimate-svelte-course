@@ -1,4 +1,4 @@
-## TypeScript with async — Promise<T> return types
+## TypeScript with async — `Promise<T>` return types
 
 ### Concept
 

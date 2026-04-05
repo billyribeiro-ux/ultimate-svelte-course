@@ -1,4 +1,4 @@
-## Error handling with {:catch} and try/catch
+## Error handling with `{:catch}` and `try/catch`
 
 ### Concept
 

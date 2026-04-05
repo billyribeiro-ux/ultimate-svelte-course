@@ -1,4 +1,4 @@
-## {#key} — forcing subtree re-creation
+## `{#key}` — forcing subtree re-creation
 
 ### Concept
 

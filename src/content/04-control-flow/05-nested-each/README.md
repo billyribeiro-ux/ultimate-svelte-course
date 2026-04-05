@@ -1,4 +1,4 @@
-## Nested {#each} — hierarchical data
+## Nested `{#each}` — hierarchical data
 
 ### Concept
 

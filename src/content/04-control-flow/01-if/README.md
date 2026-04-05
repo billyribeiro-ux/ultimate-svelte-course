@@ -1,4 +1,4 @@
-## {#if} — conditional rendering and JS boolean logic
+## `{#if}` — conditional rendering and JS boolean logic
 
 ### Concept
 

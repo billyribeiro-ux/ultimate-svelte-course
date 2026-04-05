@@ -1,4 +1,4 @@
-## {#each} with keys — stable reconciliation
+## `{#each}` with keys — stable reconciliation
 
 ### Concept
 

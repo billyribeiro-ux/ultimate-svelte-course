@@ -1,4 +1,4 @@
-## {#each} — array iteration and destructuring
+## `{#each}` — array iteration and destructuring
 
 ### Concept
 

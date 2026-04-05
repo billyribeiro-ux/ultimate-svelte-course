@@ -1,4 +1,4 @@
-## {#await} — Svelte's built-in async
+## `{#await}` — Svelte's built-in async
 
 ### Concept
 

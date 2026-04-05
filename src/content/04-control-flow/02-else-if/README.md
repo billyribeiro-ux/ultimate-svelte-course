@@ -1,4 +1,4 @@
-## {:else if} and {:else} — multi-branch
+## `{:else if}` and `{:else}` — multi-branch
 
 ### Concept
 
