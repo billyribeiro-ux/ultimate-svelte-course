@@ -63,7 +63,8 @@ for (const lesson of lessons) {
 					.filter((el) => {
 						const d = getComputedStyle(el).animationDuration;
 						if (!d || d === '0s' || d === '0ms' || d === '0.01ms') return false;
-						const first = d.split(',')[0].trim();
+						const first = (d.split(',')[0] ?? '').trim();
+						if (!first) return false;
 						const v = parseFloat(first);
 						if (Number.isNaN(v)) return false;
 						const ms = first.includes('ms') ? v : v * 1000;
