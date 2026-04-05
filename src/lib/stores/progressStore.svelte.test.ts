@@ -164,16 +164,17 @@ describe('ProgressStore', () => {
 		const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 		const { progress } = await freshStore();
 
-		flushSync(() => {
-			progress.persist();
-		});
+		progress.persist();
+		// The $effect created inside persist() runs in a detached root; a
+		// flushSync with a mutation closure forces the scheduler to run it.
 		flushSync(() => {
 			progress.markComplete('lesson-a');
 			progress.currentLessonId = 'lesson-a';
 			progress.theme = 'dark';
 		});
+		flushSync();
 
-		expect(setItemSpy).toHaveBeenCalled();
+		expect(setItemSpy).toHaveBeenCalledWith(STORAGE_KEY, expect.any(String));
 		const raw = localStorage.getItem(STORAGE_KEY);
 		expect(raw).not.toBeNull();
 		const parsed = JSON.parse(raw ?? '{}') as {
