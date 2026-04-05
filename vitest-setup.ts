@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/vitest';
-import { vi } from 'vitest';
+import { afterEach, vi } from 'vitest';
+import { cleanup } from '@testing-library/svelte';
 
 // --- $app/state ---------------------------------------------------------
 vi.mock('$app/state', () => ({
@@ -38,8 +39,9 @@ vi.mock('$env/static/private', () => ({}));
 vi.mock('$env/dynamic/public', () => ({ env: {} }));
 vi.mock('$env/dynamic/private', () => ({ env: {} }));
 
-// --- window.matchMedia --------------------------------------------------
+// --- DOM polyfills (only when a window exists) --------------------------
 if (typeof window !== 'undefined') {
+	// matchMedia
 	Object.defineProperty(window, 'matchMedia', {
 		writable: true,
 		configurable: true,
@@ -54,4 +56,39 @@ if (typeof window !== 'undefined') {
 			dispatchEvent: vi.fn()
 		}))
 	});
+
+	// ResizeObserver
+	class ResizeObserverMock {
+		observe(): void {}
+		unobserve(): void {}
+		disconnect(): void {}
+	}
+	Object.defineProperty(window, 'ResizeObserver', {
+		writable: true,
+		configurable: true,
+		value: ResizeObserverMock
+	});
+
+	// IntersectionObserver
+	class IntersectionObserverMock {
+		readonly root: Element | Document | null = null;
+		readonly rootMargin: string = '';
+		readonly thresholds: readonly number[] = [];
+		observe(): void {}
+		unobserve(): void {}
+		disconnect(): void {}
+		takeRecords(): IntersectionObserverEntry[] {
+			return [];
+		}
+	}
+	Object.defineProperty(window, 'IntersectionObserver', {
+		writable: true,
+		configurable: true,
+		value: IntersectionObserverMock
+	});
 }
+
+// Auto-cleanup DOM between tests ----------------------------------------
+afterEach(() => {
+	cleanup();
+});

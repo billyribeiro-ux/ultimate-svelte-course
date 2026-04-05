@@ -1,14 +1,20 @@
 import { defineConfig, devices } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
 
 const CI = !!process.env.CI;
 
 export default defineConfig({
 	testDir: './tests/e2e',
+	globalSetup: fileURLToPath(new URL('./scripts/build-lesson-manifest.mjs', import.meta.url)),
 	fullyParallel: true,
 	forbidOnly: CI,
 	retries: CI ? 2 : 0,
 	workers: CI ? 4 : undefined,
-	reporter: CI ? [['html'], ['list'], ['github']] : [['html'], ['list']],
+	reporter: [
+		['html', { open: 'never' }],
+		['list'],
+		['github']
+	],
 	use: {
 		baseURL: 'http://localhost:4173',
 		trace: 'on-first-retry',
@@ -46,6 +52,6 @@ export default defineConfig({
 		command: 'pnpm build && pnpm preview --port 4173',
 		url: 'http://localhost:4173',
 		reuseExistingServer: !CI,
-		timeout: 120_000
+		timeout: 180_000
 	}
 });

@@ -3,8 +3,8 @@ import { svelteTesting } from '@testing-library/svelte/vite';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-	plugins: [sveltekit(), svelteTesting()],
 	test: {
+		reporters: ['default', 'hanging-process'],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'html', 'lcov'],
@@ -22,12 +22,13 @@ export default defineConfig({
 				'**/src-tauri/**',
 				'**/tests/e2e/**',
 				'**/*.config.{js,ts}',
-				'**/vitest-setup.ts'
+				'**/vitest-setup.ts',
+				'src/lib/test-utils/**'
 			]
 		},
-		workspace: [
+		projects: [
 			{
-				extends: true,
+				plugins: [sveltekit(), svelteTesting()],
 				test: {
 					name: 'client',
 					environment: 'jsdom',
@@ -43,7 +44,7 @@ export default defineConfig({
 				}
 			},
 			{
-				extends: true,
+				plugins: [sveltekit()],
 				test: {
 					name: 'server',
 					environment: 'node',
