@@ -1,3 +1,4 @@
+import { SvelteSet } from 'svelte/reactivity';
 import type { ModuleMeta } from '$lib/types/lesson';
 
 const STORAGE_KEY = 'ultsvelte:progress:v1';
@@ -11,7 +12,7 @@ interface Snapshot {
 }
 
 class ProgressStore {
-	completedLessons = $state<Set<string>>(new Set());
+	completedLessons: SvelteSet<string> = new SvelteSet<string>();
 	currentLessonId = $state<string | null>(null);
 	theme = $state<Theme>('system');
 
@@ -40,17 +41,11 @@ class ProgressStore {
 	}
 
 	markComplete(id: string): void {
-		if (this.completedLessons.has(id)) return;
-		const next = new Set(this.completedLessons);
-		next.add(id);
-		this.completedLessons = next;
+		this.completedLessons.add(id);
 	}
 
 	markIncomplete(id: string): void {
-		if (!this.completedLessons.has(id)) return;
-		const next = new Set(this.completedLessons);
-		next.delete(id);
-		this.completedLessons = next;
+		this.completedLessons.delete(id);
 	}
 
 	toggleComplete(id: string): void {
@@ -62,7 +57,7 @@ class ProgressStore {
 	}
 
 	reset(): void {
-		this.completedLessons = new Set();
+		this.completedLessons.clear();
 	}
 
 	hydrate(): void {
@@ -73,7 +68,8 @@ class ProgressStore {
 		if (raw === null) return;
 		try {
 			const snap = JSON.parse(raw) as Snapshot;
-			this.completedLessons = new Set(snap.completed ?? []);
+			this.completedLessons.clear();
+			for (const id of snap.completed ?? []) this.completedLessons.add(id);
 			this.currentLessonId = snap.currentLessonId ?? null;
 			this.theme = snap.theme ?? 'system';
 		} catch {
