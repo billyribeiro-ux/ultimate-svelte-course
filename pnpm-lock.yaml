@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@iconify/svelte':
-        specifier: ^5.2.1
-        version: 5.2.1(svelte@5.56.4(@typescript-eslint/types@8.58.0))
+        specifier: ^5.2.2
+        version: 5.2.2(svelte@5.56.4(@typescript-eslint/types@8.58.0))
       '@tanstack/svelte-table':
         specifier: ^8.21.3
         version: 8.21.3(svelte@5.56.4(@typescript-eslint/types@8.58.0))
@@ -510,8 +510,8 @@ packages:
   '@iconify-json/ph@1.2.2':
     resolution: {integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==}
 
-  '@iconify/svelte@5.2.1':
-    resolution: {integrity: sha512-zHmsIPmnIhGd5gc95bNN5FL+GifwMZv7M2rlZEpa7IXYGFJm/XGHdWf6PWQa6OBoC+R69WyiPO9NAj5wjfjbow==}
+  '@iconify/svelte@5.2.2':
+    resolution: {integrity: sha512-XMXxD3nzH7yB68C3K4sNwzrJ1TBscODR0ZqCeNf0KGuEMCTSuCo0jHNDZ0o0iRXTylO41NSz/DWam/4atLG1yw==}
     peerDependencies:
       svelte: '>5.0.0'
 
@@ -2730,7 +2730,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify/svelte@5.2.1(svelte@5.56.4(@typescript-eslint/types@8.58.0))':
+  '@iconify/svelte@5.2.2(svelte@5.56.4(@typescript-eslint/types@8.58.0))':
     dependencies:
       '@iconify/types': 2.0.0
       svelte: 5.56.4(@typescript-eslint/types@8.58.0)
