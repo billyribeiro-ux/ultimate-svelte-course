@@ -25,7 +25,7 @@
 		"e2e:codegen": "playwright codegen http://localhost:4173"
 	},
 	"devDependencies": {
-		"@axe-core/playwright": "^4.11.1",
+		"@axe-core/playwright": "^4.12.1",
 		"@commitlint/cli": "^19.6.0",
 		"@commitlint/config-conventional": "^19.6.0",
 		"@eslint/js": "^10.0.1",
